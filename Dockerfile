@@ -11,6 +11,3 @@ RUN apt-get update && \
 
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/bin/composer
-
-# Phpunit
-RUN composer global require phpunit/phpunit && ln -s /root/.composer/vendor/bin/phpunit /usr/local/bin/phpunit
