@@ -1,6 +1,6 @@
 FROM php:cli
 
-# PHP and extensions
+# PHP with extensions
 RUN apt-get update && \
     apt-get install git unzip libgmp-dev libicu-dev libcurl4-openssl-dev libpng-dev libjpeg-dev libxml2-dev libzip-dev -y && \
     rm -rf /var/lib/apt/lists/* && \
