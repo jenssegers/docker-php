@@ -1,5 +1,5 @@
 FROM composer
-FROM php:fpm
+FROM php:fpm-alpine
 
 RUN apk --update upgrade && \
     apk add --no-cache \
