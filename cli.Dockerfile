@@ -1,14 +1,27 @@
-FROM php:cli
+FROM composer
+FROM php:cli-alpine
 
-# PHP with extensions
-RUN apt-get update && \
-    apt-get install git unzip libgmp-dev libicu-dev libcurl4-openssl-dev libpng-dev libjpeg-dev libxml2-dev libzip-dev -y && \
-    rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h && \
-    docker-php-ext-configure gd --enable-gd-native-ttf --with-png-dir=/usr/include --with-jpeg-dir=/usr/include && \
-    docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli intl opcache curl gmp mbstring gd simplexml xml zip sockets && \
+RUN apk --update upgrade && \
+    apk add --no-cache \
+        git \
+        freetype \
+        libpng \
+        libjpeg-turbo \
+        freetype-dev \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        icu-dev \
+        zlib-dev \
+        libzip-dev  \
+        gmp-dev && \
+    docker-php-ext-configure gd \
+        --with-gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pdo_mysql intl opcache gmp gd zip sockets && \
     pecl install apcu && docker-php-ext-enable apcu && \
     pecl install redis && docker-php-ext-enable redis
 
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
