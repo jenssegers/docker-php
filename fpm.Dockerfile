@@ -3,6 +3,7 @@ FROM php:fpm
 
 RUN apk --update upgrade && \
     apk add --no-cache \
+        ${PHPIZE_DEPS} \
         git \
         freetype \
         libpng \

@@ -3,6 +3,7 @@ FROM php:cli-alpine
 
 RUN apk --update upgrade && \
     apk add --no-cache \
+        ${PHPIZE_DEPS} \
         git \
         freetype \
         libpng \
