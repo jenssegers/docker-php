@@ -1,8 +1,7 @@
 FROM composer
 FROM php:fpm-alpine
 
-RUN apk --update upgrade && \
-    apk add --no-cache \
+RUN apk add --no-cache --virtual .build-deps \
         ${PHPIZE_DEPS} \
         git \
         freetype \
@@ -23,6 +22,7 @@ RUN apk --update upgrade && \
     docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pdo_mysql intl opcache gmp gd zip sockets && \
     pecl install apcu && docker-php-ext-enable apcu && \
-    pecl install redis && docker-php-ext-enable redis
+    pecl install redis && docker-php-ext-enable redis && \
+    apk del .build-deps
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
