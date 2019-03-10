@@ -23,6 +23,6 @@ RUN apk add --no-cache --virtual .build-deps \
     docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) pdo_mysql intl opcache gmp gd zip sockets && \
     pecl install apcu && docker-php-ext-enable apcu && \
     pecl install redis && docker-php-ext-enable redis && \
-    apk del .build-deps
+    apk del ${PHPIZE_DEPS}
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
