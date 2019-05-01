@@ -1,7 +1,7 @@
 FROM composer
 FROM php:fpm-alpine
 
-RUN apk add --no-cache --virtual \
+RUN apk add --no-cache --virtual .build-deps \
         ${PHPIZE_DEPS} \
         git \
         freetype \
